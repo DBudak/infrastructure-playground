@@ -1,0 +1,23 @@
+#script with specs on how to construct an image
+#alpine in hte name of the image indicates that its based on alpine linux which is much smaller
+
+#get base image
+FROM node:12.18.1-alpine
+
+#set working directory of image. other paths are realtive to this
+WORKDIR usr/src/app
+
+#copy package.json file into image
+COPY package*.json ./
+
+#install prod dependencies
+RUN npm install --only=production
+
+#copy source code of the project
+COPY ./src ./src
+
+#start app in prod mode (for prod dockerfile only)
+CMD npm start
+
+#start app in dev mode (for dev only)
+CMD config set cache-min 9999999 && npm install && npm run nodemon ./src/index.js

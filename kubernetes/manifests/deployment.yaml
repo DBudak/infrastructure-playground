@@ -1,0 +1,24 @@
+#Deployments are only available under apps/v1 API
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: test-deploy-manifest
+
+#spec for deployment at minimum includes label selector 
+#deployment uses label to find itw own managed resources
+spec:
+  selector:
+      matchLabels:
+        app: test-deploy-manifest
+#template is used when Deployment creates a Pod
+#pods in deployment don't have a name but they need a label that matches its label matchertemplate.
+  template:
+    metadata:
+        labels:
+          app: test-deploy-manifest
+    spec:
+      containers:
+        - name: container
+          image: kiamol/ch02-hello-kiamol
+

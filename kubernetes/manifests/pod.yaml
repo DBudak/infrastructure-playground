@@ -1,0 +1,15 @@
+#specify k8s API version
+apiVersion: v1
+
+#specify type of rosource to be created
+kind: Pod
+
+#metadata includes name and label
+metadata:
+  name: test-pod-manifest
+
+#spec for resource, for pod minimum is container name and image name
+spec:
+  containers:
+    - name: web
+      image: kiamol/ch02-hello-kiamol

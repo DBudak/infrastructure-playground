@@ -1,0 +1,15 @@
+version: '3' #docker compose file version
+
+services:
+  app-name: #config of app-name microservice
+    image: app-name #set the image name
+    build:
+      context: ./app-name # sets workdir
+      dockerfile: Dockerfile #sets dockerfile that builds the image
+      container_name: app-name #sets containername
+      ports: "4000:90" #maps port 80 on container to 4000 on host machine
+      environment: PORT=80 #sets env variables
+      restart: "no" ##if crushes dont restart
+      volumes:
+        /tmp/history/npm-cache:/root/.npm:z #share npm cache with host to speed up npm installs
+        ./history/src:/usr/src/app/src:z #share source code with host
