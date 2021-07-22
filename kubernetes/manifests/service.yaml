@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+
+metadata:
+  name: test-service
+spec:
+  selector:
+    app: test-deploy-manifest
+  type: ClusterIP #service internal for k8s only
+  ports:
+    - port: 80

@@ -20,3 +20,10 @@
 # a controller is a k8s resource that manages other resources
 # works with k8s API to compare the irs state with cluster state and take actions if needed
 # controller for pods is called Deployment
+
+# SERVICES
+
+# Services support routing traffic between pods, into pods, and outside to external systems
+# Pods IP addresses are created and managed by k8s so they change every time controller respins them
+# Service is an abstraction around that^ and provides a static ip address
+# Load Balancer service routes outside traffic

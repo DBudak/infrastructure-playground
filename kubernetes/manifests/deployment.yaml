@@ -12,7 +12,6 @@ spec:
       matchLabels:
         app: test-deploy-manifest
 #template is used when Deployment creates a Pod
-#pods in deployment don't have a name but they need a label that matches its label matchertemplate.
   template:
     metadata:
         labels:

@@ -26,3 +26,11 @@ kubectl create deployment <name> --image=<image path>
 
 #deploy from manifest file
 kubectl apply -f <file>.yml
+
+# COPY FILES
+kubectl cp <pod name>:<pod path> <local path>
+
+# DELETING
+
+#delete all <entity>
+kubectl delete <entity> --all

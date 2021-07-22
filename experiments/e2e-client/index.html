@@ -1,0 +1,22 @@
+<html>
+  <head></head>
+<body>
+  Hello, I am a test client side
+  <div id="result">
+  </div>
+  <script>
+    (function(){
+  const el = document.getElementById('result');
+  el.innerHTML = 'loading';
+  fetch('http://localhost:3000/')
+    .then(async (res) => {
+      const parsed = await res.json();
+      el.innerHTML = parsed.text;
+    })
+    .catch((err) => {
+      el.innerHTML = err;
+    });
+})()
+  </script>
+</body>
+</html>

@@ -48,3 +48,6 @@ docker rmi <image-id> --force
 
 #pull image from remote
 docker pull <image-name>
+
+#push image
+docker push <uname>/<repo name>:<tagname>

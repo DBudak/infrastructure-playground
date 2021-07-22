@@ -4,6 +4,9 @@
 #GitVersion is the actual version
 kubectl version
 
+#show all entites
+kubectl get all
+
 #show the list of nodes powering the cluster
 kubectl get nodes
 

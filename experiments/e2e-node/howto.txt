@@ -1,0 +1,27 @@
+npm init
+npm install --save express
+add npm start command
+add index.js code
+test npm start on localhost
+
+add dockerfile
+build an image: docker build -t <uname>/<name> --file dockerfile .
+build a container: docker run -p 3000:3000 <uname>/<name>
+test a running container on localhost
+
+login into docker remote: docker login <registry url> --username: <uname> --password <pass>
+create a repo on remote via repo UI
+publish an image to remote: docker push <uname>/<name>:<?tagname>
+run a container from published image: docker run -p 3000:3000 <registry url>/<uname>/<name>
+test a running container on localhost
+
+add an app manifest
+execute manifest: kubectl apply -f <manifest>.yaml
+test pods: kubectl get pods
+port forward pod: kubectl port-forward pod/<name> 8080:3000
+test localhost on 8080
+
+IF deployment only then you need to portforward pods to the localhost
+take pod name from kubectl get pods
+kubectl port-forward <pod name> 8081:8081
+kubectl port-forward <pod name> 3000:3000
