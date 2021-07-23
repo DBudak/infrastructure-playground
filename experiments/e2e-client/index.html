@@ -1,22 +1,43 @@
 <html>
-  <head></head>
+
+<head></head>
+
 <body>
   Hello, I am a test client side
+  <form id="form">
+    <label>Enter Endpoint</label>
+    <input name="endpoint" id="endpoint" />
+    <input type="submit" name="Fetch">
+  </form>
   <div id="result">
   </div>
   <script>
-    (function(){
-  const el = document.getElementById('result');
-  el.innerHTML = 'loading';
-  fetch('http://localhost:3000/')
-    .then(async (res) => {
-      const parsed = await res.json();
-      el.innerHTML = parsed.text;
-    })
-    .catch((err) => {
-      el.innerHTML = err;
-    });
-})()
+    (function () {
+
+      const doFetch = url => {
+        console.log(`attempting to fetch with ${url}`)
+        const el = document.getElementById('result');
+        el.innerHTML = 'loading';
+        fetch(url)
+          .then(async (res) => {
+            const parsed = await res.json();
+            el.innerHTML = parsed.text;
+          })
+          .catch((err) => {
+            el.innerHTML = err;
+          });
+      }
+
+      const handleSubmit = (e) => {
+        e.preventDefault();
+        const url = document.getElementById('endpoint').value;
+        doFetch(url);
+      }
+
+      const form = document.getElementById('form');
+      form.addEventListener('submit', handleSubmit);
+    })()
   </script>
 </body>
+
 </html>
