@@ -1,8 +1,7 @@
 //setup
 const express = require('express'),
-  fetch = require('node-fetch'),
   app = express(),
-  port = 3000;
+  port = 3002;
 
 app.use(function (req, res, next) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -14,16 +13,7 @@ app.use(function (req, res, next) {
 
 //add endpoint
 app.get('/', (req, res) => {
-  res.json({text: 'If you see this then I am working!'})
-})
-
-app.get('/service', (req, res) => {
-  fetch(process.env.SERVER_URL).then( async (d) => {
-    const resp = await d.json();
-    res.json(resp); 
-  }).catch(err => {
-    res.json(err);
-  })
+  res.json(process.env)
 })
 
 //init server

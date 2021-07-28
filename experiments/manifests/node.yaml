@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: node
+spec:
+  selector:
+      matchLabels:
+        app: node
+  template:
+    metadata:
+        labels:
+          app: node
+    spec:
+      containers:
+        - name: node
+          image: dbudak/e2e-node
+          env:
+            - name: SERVER_URL
+              value: 'http://server:3002'
+          ports:
+            - containerPort: 3000

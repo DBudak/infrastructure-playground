@@ -23,6 +23,26 @@ apiVersion: apps/v1
 kind: Deployment
 
 metadata:
+  name: server
+spec:
+  selector:
+      matchLabels:
+        app: server
+  template:
+    metadata:
+        labels:
+          app: server
+    spec:
+      containers:
+        - name: server
+          image: dbudak/node-server
+          ports:
+          - containerPort: 3002
+---
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
   name: node
 spec:
   selector:
@@ -36,6 +56,9 @@ spec:
       containers:
         - name: node
           image: dbudak/e2e-node
+          env:
+            - name: ENV_VARIABLE
+              value: 'I AM AN ENVIRONMENT VARIABLE FOR THIS POD'
           ports:
             - containerPort: 3000
 ---
@@ -50,6 +73,18 @@ spec:
   selector:
     app: client
   type: LoadBalancer
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: server
+spec:
+  ports:
+    - port: 3002
+      targetPort: 3002
+  selector:
+    app: server
+  type: ClusterIP
 ---
 apiVersion: v1
 kind: Service

@@ -27,3 +27,26 @@
 # Pods IP addresses are created and managed by k8s so they change every time controller respins them
 # Service is an abstraction around that^ and provides a static ip address
 # Load Balancer service routes outside traffic
+# NodePort is like a load balancer for specific node, its implementation variaes by vendor so use Load Balancer
+# External Name Service production service to resolve domain names to something that code expects
+# above is useful for database connections but not HTTP communications which would require additional hacking to work
+
+# HOW NETWORKING WORKS IN GENERAL
+# ClusterIP is a virtual IP that does not exist on network
+# Pods access network through kube proxy running on node
+# kube proxy uses filtering to send virtual IP to real endpoint
+# so service provide static IP that will resolve to pods it manages
+
+# ENVIRONMENT VARIABLES
+
+# Environment variables are static for the life of the pod
+# cant be updated while the pod is running
+# set in env: in manifests
+# environment variables defined in env Pod spec overwrite env variables in envFrom or configMap
+
+# CONFIG MAP
+
+# config map is a resource that stores data that can be loaded into a pod
+# data can be a file, text, an object etc
+# one config map can be used by many pods
+# k8s can use env files to create configMaps

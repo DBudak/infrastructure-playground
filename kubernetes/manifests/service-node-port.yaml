@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: node-service
+spec:
+  ports:
+    - port: 8080 # port on which service is available to other Pods
+      targetPort: 80 # port on which traffic is sent to on the Pod
+      nodePort: 30080 # port om which service is available externally
+  selector:
+    app: some-app
+  type: NodePort

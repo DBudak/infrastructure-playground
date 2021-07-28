@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config-map-person
+data:
+  name: 'John'
+  lastname: 'Doe'
+  cat.properties: |
+    species.name=feline,animal
+    designation=sleep,eat

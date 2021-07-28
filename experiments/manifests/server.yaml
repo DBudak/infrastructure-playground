@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: server
+spec:
+  selector:
+      matchLabels:
+        app: server
+  template:
+    metadata:
+        labels:
+          app: server
+    spec:
+      containers:
+        - name: server
+          image: dbudak/server-node
+          env:
+            - name: ENV_VARIABLE
+              value: 'I AM AN ENVIRONMENT VARIABLE FOR THIS POD'
+            - name: 'name_from_config_map_person'
+              valueFrom:
+                configMapKeyRef: 
+                  name: config-map-person 
+                  key: name 
+          envFrom: 
+          - configMapRef: 
+              name: config-map-cat
+          ports:
+          - containerPort: 3002

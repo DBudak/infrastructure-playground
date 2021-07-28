@@ -27,6 +27,9 @@ kubectl create deployment <name> --image=<image path>
 #deploy from manifest file
 kubectl apply -f <file>.yml
 
+#create configmap from env file
+kubectl create configmap <config name> --from-env-file=<file path>
+
 # COPY FILES
 kubectl cp <pod name>:<pod path> <local path>
 

@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-deploy-manifest
+spec:
+  selector:
+      matchLabels:
+        app: test-deploy-manifest
+  template:
+    metadata:
+        labels:
+          app: test-deploy-manifest
+    spec:
+      containers:
+        - name: container
+          image: kiamol/ch02-hello-kiamol
+          # this is where config map goes
+          # this is a pod deploy referencing a variable from a config map
+          # config map needs to exist before pod that needs it is built
+          env:
+            - name: 'CONFIG_MAP'
+              valueFrom:
+                configMapKeyRef: #this value comes from config Map
+                  name: config-map # names the config map
+                  key: configMap.section # names the data item to load from config map
+          envFrom: # load multiple variables
+                - configMapRef: # from a configmap
+                  name: another-config-map
