@@ -1,0 +1,15 @@
+clientName: client
+clientPort: 8081
+
+serverName: server
+serverPort: 3002
+
+nodeName: node
+nodePort: 3000
+nodeExposedPort: 30080
+nodeServerURL: http://server:3002
+
+loadBalancerName: e2e-load-balancer
+
+personName: Bob
+personLastName: Law

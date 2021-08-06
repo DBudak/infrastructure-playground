@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: {{ .Values.clientName }}
+spec:
+  selector:
+      matchLabels:
+        app: {{ .Values.clientName }}
+  template:
+    metadata:
+        labels:
+          app: {{ .Values.clientName }}
+    spec:
+      containers:
+        - name: {{ .Values.clientName }}
+          image: dbudak/e2e-client
+          ports:
+          - containerPort: {{ .Values.clientPort }}

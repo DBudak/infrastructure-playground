@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: {{ .Values.serverName }}
+spec:
+  selector:
+      matchLabels:
+        app: {{ .Values.serverName }}
+  template:
+    metadata:
+        labels:
+          app: {{ .Values.serverName }}
+    spec:
+      containers:
+        - name: {{ .Values.serverName }}
+          image: dbudak/server-node
+          env:
+            - name: ENV_VARIABLE
+              value: 'I AM AN ENVIRONMENT VARIABLE FOR THIS POD'
+            - name: 'name_from_config_map_person'
+              valueFrom:
+                configMapKeyRef: 
+                  name: config-map-person 
+                  key: name 
+            - name: "SECRET PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: secret-test
+                  key: PASSWORD
+          envFrom: 
+          - configMapRef: 
+              name: config-map-cat
+          ports:
+          - containerPort: {{ .Values.serverPort }}

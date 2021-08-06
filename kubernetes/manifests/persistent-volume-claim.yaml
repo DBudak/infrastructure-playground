@@ -1,0 +1,12 @@
+# This will match to a persistent-volume-nfs
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 40Mi
+  storageClassName: "" # blank means a PV needs to exist and k8s will try to find it

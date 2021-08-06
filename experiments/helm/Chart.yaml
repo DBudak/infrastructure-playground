@@ -1,0 +1,6 @@
+apiVersion: v2
+name: dbudak-chart
+description: a chart version of example application
+type: application
+version: 0.0.1
+appVersion: 0.0.1

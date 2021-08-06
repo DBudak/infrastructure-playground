@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: {{ .Values.nodeName }}
+spec:
+  selector:
+      matchLabels:
+        app: {{ .Values.nodeName }}
+  template:
+    metadata:
+        labels:
+          app: {{ .Values.nodeName }}
+    spec:
+      containers:
+        - name: {{ .Values.nodeName }}
+          image: dbudak/e2e-node
+          env:
+            - name: SERVER_URL
+              value: {{ .Values.nodeServerURL }}
+          ports:
+            - containerPort: {{ .Values.nodePort }}
