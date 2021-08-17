@@ -22,6 +22,9 @@ kubectl logs --tail=2 <podname>
 #create a Deployment controller
 kubectl create deployment <name> --image=<image path>
 
+# change spec of selected object on a fly
+kubectl set image deployment/<deployment name> <image path>/<image name>
+
 # APP MANIFESTS
 
 #deploy from manifest file
@@ -37,3 +40,22 @@ kubectl cp <pod name>:<pod path> <local path>
 
 #delete all <entity>
 kubectl delete <entity> --all
+
+# ROLLOUS ROLLBACKS
+
+# initiate a rollout
+kubectl apply...
+
+# initiate a rollback
+#   --dry-run allows to see what will happen without applying it
+#   --to-revision=2 will rollback to specific revision
+kubectl rollout undo <deploy> --dry-run --to-revision=2
+
+# deploy to a specific namespace
+kubectl apply -f <file> --namespace <namespace>
+
+# gets contexts
+kubectl config get-contexts
+
+# update default namespace for current cuntext
+kubectl config set-context --current --namespace=<namespace>

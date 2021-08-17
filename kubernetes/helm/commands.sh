@@ -36,3 +36,15 @@ helm search repo <name>
 
 # get subchart dependencies ready
 helm dependency build <chart path>
+
+# check values
+helm get values <release name>
+
+# upgrade value (rollout)
+helm upgrade --reuse-values --atomic <name> --version <version>
+
+# see history of releases
+helm history <name>
+
+# rollback
+helm rollback <name> <version>

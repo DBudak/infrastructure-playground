@@ -18,3 +18,6 @@ kubectl describe pod <podname>
 
 #see logs for specific pod
 kubectl logs <podname-id>
+
+#check deployment history
+kubectl rollout history deploy/<deploy name>

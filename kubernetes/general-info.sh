@@ -1,10 +1,11 @@
+# GENERAL
+
 # K8s is a platform for running containers
 # 2 main concepts of k8s API and cluster
 # K8s cluster is a set of individual servers that have all been configured with container runtime like Docker
 # Individual servers are called nodes
 # Each nnode is a VM
 # Each node can have multiple pods
-
 
 # PODS
 
@@ -15,6 +16,16 @@
 # Pod can talk to other pods, even if they are on different nodes
 # Pod can run multiple containers, although usually they run only one
 # Pod name contains a hash with deployment template
+# Pods can have multiple containers
+# Additional containers mount via volumes
+# Default multi container pod pattern is sidecar
+# In sidecar all containers need to be ready for Pod to be ready
+# Init is another pattern, init containers run sequentially
+# Ambassador pattern is good for networking containers
+# Only helper containers should be added to a single container pods since every container adds a point of failure that is not managed by k8s directly
+# Each container has a compute layer isolation
+# Adding shareProcess-Namespace: true removes the above and allows containers to access processes of each other on the same pod
+# Can have multiple labels like appname label and version label
 
 # CONTROLLERS
 
@@ -89,3 +100,57 @@
 # Deployment manages a ReplicaSet controller which in turn manages pods
 # You can manually create a ReplicaSet controller
 # Deployment manages deployment mechanisms through multiple ReplicaSets
+
+# STATEFUL SET
+
+# Unlike ReplicaSet (created under the hood by Deployments) Stateful Set:
+# Creates Pods with predictable names
+# Pods can be individually acessed over DNS
+# Pods are started in order
+# Useful for databases
+# Can have volumeClaimTemplate that acts as a pre-defined PVC
+# Managed DB environments should be considered for dbs instead of StatefulSets because the latter are complex
+
+# JOBS and CRONJOBS
+
+# Job is a Pod controller
+# Job runs a Pod and a container inside it
+# Jobs need to be finished to completion
+# Job has standard Pod spec with required restartPolicy field
+# Job add job name to the pod name that they create
+# Job spec supports completions param defining how many time Job should run
+# Job spec has parallelism param that controls how many Pods to run in parallel to reach completions
+# CronJob is a Job with Linux Cron timer setup that runs every X days/miuntes/seconds etc
+# CronJobs don't use label-based selector ownership because they don't own Jobs
+
+# ROLLOUTS ROLLBACKS DEPLOYMENT STRATEGIES
+
+# Every time a change is applied to Deployment Pod spec a rollout is initiated
+# In rollout Deployment creates new ReplicaSet and scales it to desired number of Pods
+# Rollouts are only trigerred from changing Pod Spec. Changing Deployment or ReplicaSet does not initiate or require a rollout
+# Rollback is initiated via rollout undo command
+# If --dry-run is added to above it will only show what would happen not apply it
+# Rolling update is the dafault strategy for rollouts
+# Another strategy is Recreate which brings everything down and then scales everything up. Should be avoided.
+# maxUnavailable setting allows to control how many Pods can be unavailable during update
+# maxSurge allows to control how many extra Pods can exist
+# minReadySeconds adds the delay Deployment will wait to make sure new Pods are stable
+# progressDeadlineSeconds specifies the amount Deployment can run before it is considered a failure. Default is 600 seconds
+
+# NAMESPACES
+
+# Namespaces are a grouping mechanism
+# Every k8s object belongs to a Namespace
+# Can use multiple Namespacses to divide cluster into virtual clusters
+# Namespaces can be defined with yaml
+# Context sets the default Namespace to use in kubectl commands 
+
+# SELF HEALING
+
+# Readiness Probe takes action at network level, pinging container
+# If above check result is unhealthy it removes the Pod from the Service managed list
+# Liveliness Probe  takes action at compute level
+# If above check result is unhealthy it restarts the container inside the Pod
+# Deploytments can have a spec defining max allowed memory quota
+# ResourceQuota can be created to manage CPU and RAM on namespace level
+# CPU limits in Deployment specs are measured in micro-cores (1000 m = 1 core)
