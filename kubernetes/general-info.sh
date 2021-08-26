@@ -154,3 +154,66 @@
 # Deploytments can have a spec defining max allowed memory quota
 # ResourceQuota can be created to manage CPU and RAM on namespace level
 # CPU limits in Deployment specs are measured in micro-cores (1000 m = 1 core)
+
+# LOGS AND MONITORS
+
+# Fluentd and Elastic Search for logging
+# Prometheus for monitoring
+# Prometheus is only and aggregator, app itself needs to provide monitors 
+
+# SECURITY
+
+# K8s has many security features ALL OF WHICH ARE OFF by default
+# Securing apps in k8s is about limiting network access, what containers can do and access to k8s API
+# Ingress objects control access to HTTP routes, but that applies only to external access
+# Network Policy is a k8s object to control internal network access within the cluster
+# Network Policies work like firewalls: block traffic to or from specific ports on Pods
+# Network Policy supports blanket deny-all rules
+# Network Policy DOES NOT provide any security on its own and needs network implementation on the cluster to enforce the rules it provides
+# To apply Network Policy rules create a custom cluster using Kind with Calico
+# For Network Policy recipes see https://github.com/ahmetb/kubernetes-network-policy-recipes
+# By default all Linux based containers are created with root user
+# By default Kubernetes token is accessible in any container to use K8s API
+# With the two above any attacker who gets inside the container has access to all other containers AND k8s API
+# Pods can specify the user for container via SecurityContext field in its spec
+# NOTE that port 80 is not accessible to non root users in Linux, so move the app to a different port
+# If Pod does not need to access k8s API (most don't) add automountServiceAccountToken: false to its spec
+# To fine grain control user capabilities add capabilities field into Pod spec
+# ValidatingAdmissionWebhook implements custom logic to allow/block resource creation
+# MutatingAdmissionWebhook edits the created object implicitly using custom logic
+# Logic for wehooks can be written in any language
+# Webhooks easily get messy and produce unexpected results
+# OPA (Open Policy Agent) is a unified approach of writing policies
+# OPA Gatekeeper: 1. deploy it in a cluser 2. create comstraint template
+# OPA uses Rego (raygo) language
+# Best practices for policies:
+# All Pods must have container probes defined 
+# Pods can run containers only from approved image repositories
+# All containers must have memory and CPU limits
+# Steps to secure k8s environment (not exhaustive list):
+# Adopt security contexts, then network policies, then admission control
+
+# SECURITY: PERMISSIONS
+
+# Kubernetes supports least-privilege acess with role-based access control (RBAC)
+# RBAC applies to end users and to services. But they require different controllers
+# RBAC works by granting permissions to perform actions on resources
+# Permissions are applied to a subject, which can be user, system account or group
+# Permissions are applied indirectly through roles
+# RBAC defines Role and RoleBinding objects to work on namespaced object
+# RBAC defines ClusterRole and ClusterRoleBinding objects to work on whole cluster
+# K8s does not authenticate end users so clusters rely on external identity providers to authenticate
+# Active Directory, LDAP, OpenID Connect (OIDC) are the mostp opular identity management systems
+# Permissions are all additive so subjects start with NO permissions and end up with sum total of their roles
+# Any namespace has a default service account and any Pods that don't specify a service account will use a default
+# Service accounts manage access to API. Best practice is to create a separate service account for each service
+# Note that Service accounts are only needed for things like Prometheus, business apps dont need K8s API
+# If no service account is specified each app ADDS its permissions to default account. Which ends up with default account ability to do way too much
+# In RBAC resources NEED TO EXIST before roles can be applied
+# K8s runs manifests in file order so if using above name files like 01- 02- 03- etc with roles AFTER the resources
+# K8s has can-i command to check if a user can perform an action
+# Additional commands are plugins: who-can (inverse of can-i), access-matrix, rbac-lookup
+# Best practices: 
+# Start with predefined cluster roles and limit admin role usage
+# Use namespaces as security boundary to limit the scope further
+# Use service accounts sparingly and only for services that need k8s API access
