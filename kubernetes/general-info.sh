@@ -217,3 +217,44 @@
 # Start with predefined cluster roles and limit admin role usage
 # Use namespaces as security boundary to limit the scope further
 # Use service accounts sparingly and only for services that need k8s API access
+
+# DEPLOYMENTS
+
+# Control plane is the management side of the cluster
+# Nodes run workloads inside the cluster
+# Control plane receives kubectl requests and actions them by scheduling Pods on Nodes
+# In managed env control plane is taken care of. In EKS it is completely abstracted
+# Cluster needs API server, Scheduler and Control manager to function
+# API server is a REST API with HTTPS endoints that receive kubectl commands
+# Scheduler watches for new Pod requests and selects a node to run them
+# Controller manager runs core controllers
+# Etcd is k8s data store where all cluster data is stored
+# You need to run multiple control nodes for high availability since if it goes down you can't interact with k8s
+# Kubelet is background agent running on a server that manages Pod lifecycle and seds health checks to API server for Node health
+# Kube-proxy is a network component that routes traffic between Pods
+# Container Runtime is used by Kubelet to manage Pod Containers, ie Docker
+# Kubeadm is a tool that takes care of deploying k8s
+
+# SCALING AND WORKLOAD PLACEMENT
+
+# When new Pod is created it goes into Pending state until its allocated to a Node
+# Scheduler's job is to find a suitable Node for pending Pods
+# Scheduling has two parts filtering and scoring
+# Filtering excludes unsuitable Nodes
+# Scoring ranks remaining Nodes to find the best option
+# Nodes can have Taints to mark them as not suitable for general work
+# Master Taint is applied to Control Plane Nodes to make sure no workload runs on them
+# Pods can tolerate certain Taints. Tolerations are specified in Deployment specs
+# Taints and Tolerations should be only used to express negative scenarios
+# Positive scenarios should use Affinity and Antiaffinity
+# Affinity can be claimed in Deployment spec to ensure Pods land on certain Nodes
+# Pods can express Affinity to other Pods so they are scheduled to land on same Node
+# Reverse logic above for Antiaffinity
+# K8s auto scales application by adding or removing Pods (horizontal)
+# K8s wont auto scale until it has a metrics-server to use for in-time health checks
+# Version 2 of scaling spec allows to use any metrics for scaling, like HTTP request quantity, Prometheus metrics etc
+# K8s can sometimes evict a Pod if it thinks a Node is working to hard 
+# K8s will attempt to restart evicted Pod on a different Node
+# Evicted Pods stay on the Node with stopped containers for later troubleshooting
+# Pod eviction is rare and happens in extreme circumstances where Node would fail anyway
+# Deployment Spec can specify Priority Class for Pods to make sure they are evicted last. The larger the value the more important it is
